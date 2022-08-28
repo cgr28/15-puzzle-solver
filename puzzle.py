@@ -81,7 +81,7 @@ class Puzzle:
         elif dir == Moves.DOWN:
             return self.__slide_down()
     
-    def shuffle(self, num):
+    def shuffle(self, num=50):
         for _ in range(num):
             moved = False
             dirs = [Moves.RIGHT, Moves.LEFT, Moves.UP, Moves.DOWN]
@@ -93,11 +93,9 @@ class Puzzle:
 
     def display(self):
         for i in range(4):
-            for j in range(4):
-                print(self.puzzle[i][j], end="  |  ")
-            print("\n--------------------")
+            print("{:^8} {:^8} {:^8} {:^8}\n".format(self.puzzle[i][0], self.puzzle[i][1], self.puzzle[i][2], self.puzzle[i][3]))
     
-    def solution(self):
+    def astar_solution(self):
         open = [State(0, Heuristics.overall_manhattan_distance(self.puzzle), self)]
         closed = []
         while open:

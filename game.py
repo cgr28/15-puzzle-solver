@@ -1,4 +1,4 @@
-# game.py -- terminal sliding puzzle game
+# game.py -- terminal 15-puzzle game
 
 from puzzle import Puzzle
 from enums import *
@@ -18,9 +18,9 @@ def cli_puzzle(puzzle):
 def solver(puzzle):
     c = None
     click.clear()
-    click.secho("solving puzzle...")
+    click.secho("solving puzzle...", blink=True)
     click.clear()
-    solution = puzzle.solution()
+    solution = puzzle.astar_solution()
     index = 0
     while c != "x":
         puzzle = solution[index].puzzle

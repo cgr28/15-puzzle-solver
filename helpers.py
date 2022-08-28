@@ -1,5 +1,6 @@
 from enums import *
 from collections import deque
+
 class State:
 
     def __init__(self, g, h, puzzle, parent=None, move=None):
