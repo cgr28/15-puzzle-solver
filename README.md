@@ -11,19 +11,19 @@ Solves a 15 puzzle using A*, IDA*, or best first search using a manhattan distan
 1. Generate a solution using BFS and a board shuffled 100 times.
 <br/>
 
-    ```python3 solver.py bfs 100```
+   ```python3 solver.py bfs 100```
 <br/>
 
 1. Generate a solution using A* and a board shuffled 0 times.
 <br/>
 
-    ```python3 solver.py astar 0```
+   ```python3 solver.py astar 0```
 <br/>
 
 3. Generate a solution using IDA* and a board shuffled 50 times.
 <br/>
 
-    ```python3 solver.py idastar 50```
+   ```python3 solver.py idastar 50```
 
 Note: IDA\* and A\* may take a some time to find a optimal solution on more complex puzzles
 
@@ -58,9 +58,10 @@ or
 ### Example
 1. Start a game with a board shuffled 100 times.
 <br />
-    ```15-puzzle -s 100```
+
+   ```15-puzzle -s 100```
 <br/>
 or
 <br/>
 
-    ```python3 game.py -s 100```
+   ```python3 game.py -s 100```
