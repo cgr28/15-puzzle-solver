@@ -4,6 +4,8 @@ from puzzle import *
 import sys
 
 class State:
+    """Used in the solvers to represent a state
+    """
 
     def __init__(self, g, h, puzzle, parent=None, move=None):
         self.g = g
@@ -49,6 +51,12 @@ class Heuristics:
 
     @staticmethod
     def manhattan_distance(start, end):
+        """Returns the distance between two points.
+
+        Args:
+            start: The position of the starting point.
+            end: The position of the end point.
+        """
         y1, x1 = start
         y2, x2 = end
         ans = abs(x1 - x2) + abs(y1 - y2)
@@ -56,30 +64,26 @@ class Heuristics:
         return ans
 
     @staticmethod
-    def overall_manhattan_distance(puzzle):
-        # start = time.time()
-        solution_hash = {"1": (0, 0), "2": (0, 1), "3": (0, 2), "4": (0, 3),
-                         "5": (1, 0), "6": (1, 1), "7": (1, 2), "8": (1, 3),
-                         "9": (2, 0), "10": (2, 1), "11": (2, 2), "12": (2, 3),
-                         "13": (3, 0), "14": (3, 1), "15": (3, 2), "_": (3, 3)}
+    def overall_manhattan_distance(board):
+        """Returns the value of how far away each puzzle piece is from its goal position.
+
+        Args:
+            board: A 15 puzzle board.
+        """
+
+        goal_pos = {"1": (0, 0), "2": (0, 1), "3": (0, 2), "4": (0, 3),
+                    "5": (1, 0), "6": (1, 1), "7": (1, 2), "8": (1, 3),
+                    "9": (2, 0), "10": (2, 1), "11": (2, 2), "12": (2, 3),
+                    "13": (3, 0), "14": (3, 1), "15": (3, 2), "_": (3, 3)}
         overall = 0
         for i in range(4):
             for j in range(4):
-                key = puzzle[i][j]
-                overall += Heuristics.manhattan_distance((i, j), solution_hash[key])
-        # print(f"manhattan time: {time.time() - start}")
+                key = board[i][j]
+                overall += Heuristics.manhattan_distance((i, j), goal_pos[key])
         return overall
 
 
 class Translators:
-
-    @staticmethod
-    def puzzle_to_string(puzzle):
-        ret_string = ""
-        for i in range(4):
-            for j in range(4):
-                ret_string += f"{puzzle[i][j]}."
-        return ret_string
     
     @staticmethod
     def move_to_string(move):
@@ -96,6 +100,11 @@ class Helpers:
 
     @staticmethod
     def state_tree(state):
+        """Returns a list of a given states \"family tree\".
+
+        Args:
+            state: The state whose \"family tree\" will be generated.
+        """
         tree = deque([state])
         while state.parent:
             tree.appendleft(state.parent)

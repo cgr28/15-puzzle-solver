@@ -6,22 +6,33 @@ import sys
 SOLUTION = [["1", "2", "3", "4"],["5", "6", "7", "8"],["9", "10", "11", "12"],["13", "14", "15", "_"]]
 
 class Puzzle:
-
+    """Represents the 15 puzzle.
+    """
     def __init__(self, board=[["1", "2", "3", "4"],["5", "6", "7", "8"],["9", "10", "11", "12"],["13", "14", "15", "_"]], empty=None):
         self.board = board
         if not empty:
-            self.empty = Puzzle.__find_blank(board)
+            self.empty = Puzzle.__find_empty(board)
         else:
             self.empty = empty
 
     @staticmethod
-    def __find_blank(board):
+    def __find_empty(board):
+        """Returns the position of the empty spot in the board.
+
+        Args:
+            board: The board to be searched.
+        """
         for i in range(4):
             for j in range(4):
                 if board[i][j] == "_":
                     return (i, j)
 
     def __can_move(self, pos):
+        """Verifies whether position is acceptable.
+
+        Args:
+            pos: The position that needs to be checked.
+        """
         row, col = pos
 
         if row < 0 or row > 3:
@@ -33,30 +44,16 @@ class Puzzle:
         return True
     
     def __swap_peek(self, pos1, pos2):
+        """Returns a board with two elements swapped.
+
+        Args:
+            pos1: Position of the first element.
+            pos2: Position of the second element.
+        """
         board = [list(row) for row in self.board]
         board[pos1[0]][pos1[1]], board[pos2[0]][pos2[1]] = board[pos2[0]][pos2[1]], board[pos1[0]][pos1[1]]
         return board
 
-    def possible_states(self, state):
-        new_states = []
-        row, col = self.empty
-        if row > 0:
-            new_puzzle = Puzzle(self.__swap_peek((row, col), (row-1, col)))
-            new_state = State(state.g + 1, Heuristics.overall_manhattan_distance(new_puzzle.board), new_puzzle, state, Moves.UP)
-            new_states.append(new_state)
-        if row < 3:
-            new_puzzle = Puzzle(self.__swap_peek((row, col), (row+1, col)))
-            new_state = State(state.g + 1, Heuristics.overall_manhattan_distance(new_puzzle.board), new_puzzle, state, Moves.DOWN)
-            new_states.append(new_state)
-        if col > 0:
-            new_puzzle = Puzzle(self.__swap_peek((row, col), (row, col-1)))
-            new_state = State(state.g + 1, Heuristics.overall_manhattan_distance(new_puzzle.board), new_puzzle, state, Moves.LEFT)
-            new_states.append(new_state)
-        if col < 3:
-            new_puzzle = Puzzle(self.__swap_peek((row, col), (row, col+1)))
-            new_state = State(state.g + 1, Heuristics.overall_manhattan_distance(new_puzzle.board), new_puzzle, state, Moves.RIGHT)
-            new_states.append(new_state)
-        return new_states
     
     def __slide_left(self):
         row, col = self.empty
@@ -94,10 +91,41 @@ class Puzzle:
         self.board[row][col], self.board[new_row][col] = self.board[new_row][col], self.board[row][col]
         return True
 
+    def possible_states(self, state):
+        """Returns a list of states to be searched.
+
+        Args:
+            state: The parent state for the soon to be generated children states.
+        """
+        new_states = []
+        row, col = self.empty
+        if row > 0:
+            new_puzzle = Puzzle(self.__swap_peek((row, col), (row-1, col)))
+            new_state = State(state.g + 1, Heuristics.overall_manhattan_distance(new_puzzle.board), new_puzzle, state, Moves.UP)
+            new_states.append(new_state)
+        if row < 3:
+            new_puzzle = Puzzle(self.__swap_peek((row, col), (row+1, col)))
+            new_state = State(state.g + 1, Heuristics.overall_manhattan_distance(new_puzzle.board), new_puzzle, state, Moves.DOWN)
+            new_states.append(new_state)
+        if col > 0:
+            new_puzzle = Puzzle(self.__swap_peek((row, col), (row, col-1)))
+            new_state = State(state.g + 1, Heuristics.overall_manhattan_distance(new_puzzle.board), new_puzzle, state, Moves.LEFT)
+            new_states.append(new_state)
+        if col < 3:
+            new_puzzle = Puzzle(self.__swap_peek((row, col), (row, col+1)))
+            new_state = State(state.g + 1, Heuristics.overall_manhattan_distance(new_puzzle.board), new_puzzle, state, Moves.RIGHT)
+            new_states.append(new_state)
+        return new_states
+
     def copy(self):
         return Puzzle([list(row) for row in self.board], self.empty)
     
     def slide(self, dir):
+        """Slides an adjacent puzzle piece into empty.
+
+        Args:
+            dir: The direction the piece originates from.
+        """
         if dir == Moves.RIGHT:
             return self.__slide_right()
         elif dir == Moves.LEFT:
@@ -108,6 +136,11 @@ class Puzzle:
             return self.__slide_down()
     
     def shuffle(self, num=250):
+        """Shuffles the board at random.
+
+        Args:
+            num (int, optional): Number of times to shuffle the board. Defaults to 250.
+        """
         for _ in range(num):
             moved = False
             dirs = [Moves.RIGHT, Moves.LEFT, Moves.UP, Moves.DOWN]
@@ -118,10 +151,14 @@ class Puzzle:
                 moved = self.slide(dir)
 
     def display(self):
+        """Displays the current board.
+        """
         for i in range(4):
             print("{:^8} {:^8} {:^8} {:^8}\n".format(self.board[i][0], self.board[i][1], self.board[i][2], self.board[i][3]))
 
     def best_first_search(self):
+        """Generates a best first search solution to the puzzle.  Not guaranteed to provide the optimal solution.
+        """
         search = [State(0, Heuristics.overall_manhattan_distance(self.board), self, None)]
         vis = []
         while search:
@@ -153,6 +190,8 @@ class Puzzle:
 
     
     def astar(self):
+        """Generates an A* solution to the puzzle.  Guaranteed to provide an optimal solution.  May take a while to complete.
+        """
         open = [State(0, Heuristics.overall_manhattan_distance(self.board), self)]
         closed = []
         while open:
@@ -194,6 +233,8 @@ class Puzzle:
         return None
 
     def idastar(self):
+        """Generates an IDA* solution to the puzzle.  Guaranteed to provide an optimal solution.  May take a while to complete.
+        """
         root = State(0, Heuristics.overall_manhattan_distance(self.board), self)
         thresh = root.h
         while True:
