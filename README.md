@@ -4,7 +4,7 @@ Multiple implementations of a 15 puzzle solver and a 15 puzzle terminal game.
 ## Solvers
 Solves a 15 puzzle using A*, IDA*, or best first search using a manhattan distance heuristic.
 ### Usage
-1. Edit the ```PUZZLE``` variable in solver.py with your puzzle configuration.
+1. Edit the [PUZZLE](https://github.com/cgr28/15-puzzle-solver/blob/main/solver.py#L10) variable in solver.py with your puzzle configuration.
 2. ```python3 solver.py <astar|idastar|bfs> <number of shuffles>```
 
 ### Examples
