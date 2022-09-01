@@ -209,7 +209,7 @@ class Puzzle:
 
             for new_state in state.puzzle.possible_states(state):
                 contains = False
-                temp_state_index = False
+                new_state_index = False
 
                 for i in range(len(closed)):
                     if closed[i].puzzle.board == new_state.puzzle.board:
@@ -220,16 +220,16 @@ class Puzzle:
                     continue
                 
                 for i in range(len(open)):
-                    if open[i].puzzle.board == state.puzzle.board:
-                        temp_state_index = i
+                    if open[i].puzzle.board == new_state.puzzle.board:
+                        new_state_index = i
                         break
 
-                if temp_state_index == False:
+                if new_state_index == False:
                     open.append(new_state)
                 else:
-                    orig = open[temp_state_index]
+                    orig = open[new_state_index]
                     if orig.g < new_state.g:
-                        open[temp_state_index].new_parent(state)
+                        open[new_state_index].new_parent(state)
         return None
 
     def idastar(self):

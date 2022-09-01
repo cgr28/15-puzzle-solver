@@ -20,7 +20,7 @@ def solver(puzzle):
     click.clear()
     click.secho("solving puzzle...", blink=True)
     click.clear()
-    solution = puzzle.astar()
+    solution = puzzle.best_first_search()
     index = 0
     while c != "x":
         puzzle = solution[index].puzzle
