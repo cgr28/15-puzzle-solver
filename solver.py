@@ -14,9 +14,9 @@ PUZZLE = [["1", "2", "3", "4"],
 puzzle = Puzzle(PUZZLE)
 
 # uncomment below to have puzzle shuffled automatically
-puzzle.shuffle(100)
+# puzzle.shuffle(100)
 
-solution = puzzle.astar_solution()
+solution = puzzle.astar()
 
 for i in range(len(solution)):
     print(f"STEP {i+1} of {len(solution)}")

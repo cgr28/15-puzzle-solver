@@ -20,16 +20,16 @@ def solver(puzzle):
     click.clear()
     click.secho("solving puzzle...", blink=True)
     click.clear()
-    solution = puzzle.astar_solution()
+    solution = puzzle.astar()
     index = 0
     while c != "x":
         puzzle = solution[index].puzzle
         click.secho("solver mode", blink=True)
         click.secho()
-        cli_puzzle(puzzle.puzzle)
+        cli_puzzle(puzzle.board)
         click.secho()
         click.secho(f"step {index+1} of {len(solution)}")
-        click.secho("keys w and d - change step")
+        click.secho("w and d - change step")
         click.secho("x - exit solver mode")
         click.secho("ctrl + c - exit game")
         c = click.getchar()
@@ -105,10 +105,10 @@ def cli(shuffle):
     puzzle.shuffle(shuffle)
     solver_used = False
     moves = 0
-    while puzzle.puzzle != SOLUTION:
-        cli_puzzle(puzzle.puzzle)
+    while puzzle.board != SOLUTION:
+        cli_puzzle(puzzle.board)
         click.secho()
-        click.secho("keys w, a, s, and d - slide pieces")
+        click.secho("w, a, s, and d - slide pieces")
         click.secho("x - enter solver mode")
         click.secho("ctrl + c - exit game")
         click.secho(f"moves: {moves}")
@@ -126,6 +126,7 @@ def cli(shuffle):
         elif c == "x":
             puzzle = solver(puzzle)
             solver_used = True
+            moves -= 1
         else:
             continue
         moves += 1

@@ -1,5 +1,7 @@
 from enums import *
 from collections import deque
+from puzzle import *
+import sys
 
 class State:
 
@@ -18,14 +20,44 @@ class State:
 
 class Heuristics:
 
+    # top_half = {}
+    # bottom_half = {}
+
+    # @staticmethod
+    # def generate_database():
+    #     num_of_moves = 0
+    #     vis = set()
+    #     solution = Puzzle([["1", "2", "3", "4"],["5", "6", "7", "8"],["*", "*", "*", "*"],["*", "*", "*", "_"]])
+    #     que = deque([solution])
+    #     while que:
+    #         state = que.pop()
+    #         vis.add(Translators.puzzle_to_string(state.board))
+    #         for move in [Moves.RIGHT, Moves.LEFT, Moves.UP, Moves.DOWN]:
+    #             temp = state.copy()
+    #             can_move = temp.slide(move)
+    #             if not can_move:
+    #                 continue
+    #             if Translators.puzzle_to_string(temp.board) in vis:
+    #                 continue
+    #             que.appendleft(temp)
+    #         num_of_moves += 1
+    #     print(num_of_moves)
+            
+    # @staticmethod
+    # def pattern_database(puzzle):
+    #     pass
+
     @staticmethod
     def manhattan_distance(start, end):
         y1, x1 = start
-        y2, x2 = end 
-        return abs(x1 - x2) + abs(y1 - y2)
+        y2, x2 = end
+        ans = abs(x1 - x2) + abs(y1 - y2)
+        # print(f"|{x1} - {x2}| + |{y1} - {y2}| =", ans)
+        return ans
 
     @staticmethod
     def overall_manhattan_distance(puzzle):
+        # start = time.time()
         solution_hash = {"1": (0, 0), "2": (0, 1), "3": (0, 2), "4": (0, 3),
                          "5": (1, 0), "6": (1, 1), "7": (1, 2), "8": (1, 3),
                          "9": (2, 0), "10": (2, 1), "11": (2, 2), "12": (2, 3),
@@ -35,7 +67,9 @@ class Heuristics:
             for j in range(4):
                 key = puzzle[i][j]
                 overall += Heuristics.manhattan_distance((i, j), solution_hash[key])
+        # print(f"manhattan time: {time.time() - start}")
         return overall
+
 
 class Translators:
 
@@ -61,17 +95,25 @@ class Translators:
 class Helpers:
 
     @staticmethod
-    def a_star_contains(state, closed):
-        state_string = Translators.puzzle_to_string(state.puzzle.puzzle)
-        for i in range(len(closed)):
-            if Translators.puzzle_to_string(closed[i].puzzle.puzzle) == state_string:
-                return i
-        return False
-
-    @staticmethod
     def state_tree(state):
         tree = deque([state])
         while state.parent:
             tree.appendleft(state.parent)
             state = state.parent
         return tree
+
+    @staticmethod
+    def idastar_search(state, thresh):
+        if state.f > thresh:
+            return False, state.f
+        if state.h == 0:
+            return True, [state]
+        min = sys.maxsize
+        for new_state in state.puzzle.possible_states(state):
+            found, temp = Helpers.idastar_search(new_state, thresh)
+
+            if found == True:
+                return True, [state] + temp
+            if temp < min:
+                min = temp
+        return False, min
