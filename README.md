@@ -8,7 +8,7 @@ Solves a 15 puzzle using A*, IDA*, or best first search using a manhattan distan
 2. ```python3 solver.py <astar|idastar|bfs> <number of shuffles>```
 
 ### Examples
-1. Generate a solution using BFS and a board shuffled 100 times.
+1. Generate a solution using best first search and a board shuffled 100 times.
 <br/>
 
    ```python3 solver.py bfs 100```
