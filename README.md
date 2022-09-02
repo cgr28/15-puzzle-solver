@@ -14,7 +14,7 @@ Solves a 15 puzzle using A*, IDA*, or best first search using a manhattan distan
    ```python3 solver.py bfs 100```
 <br/>
 
-1. Generate a solution using A* and a board shuffled 0 times.
+2. Generate a solution using A* and a board shuffled 0 times.
 <br/>
 
    ```python3 solver.py astar 0```
