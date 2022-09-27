@@ -1,67 +1,62 @@
-<h1 align="center">15 Puzzle Solver</h1>
+# 15 Puzzle Solver
 Multiple implementations of a 15 puzzle solver and a 15 puzzle terminal game.
 
-## Solvers
-Solves a 15 puzzle using A*, IDA*, or best first search using a manhattan distance heuristic.
-### Usage
-1. Edit the [PUZZLE](https://github.com/cgr28/15-puzzle-solver/blob/main/solver.py#L10) variable in solver.py with your puzzle configuration.
-2. ```python3 solver.py <astar|idastar|bfs> <number of shuffles>```
-
-### Examples
-1. Generate a solution using best first search and a board shuffled 100 times.
-<br/>
-
-   ```python3 solver.py bfs 100```
-<br/>
-
-2. Generate a solution using A* and a board shuffled 0 times.
-<br/>
-
-   ```python3 solver.py astar 0```
-<br/>
-
-3. Generate a solution using IDA* and a board shuffled 50 times.
-<br/>
-
-   ```python3 solver.py idastar 50```
-
-Note: IDA\* and A\* may take a some time to find a optimal solution on more complex puzzles
+1. [ Game ](https://github.com/cgr28/15-puzzle-solver#game)
+2. [ Solver ](https://github.com/cgr28/15-puzzle-solver#solver)
 
 ## Game
-A 15 puzzle game played in the terminal.
+### Installation
+```bash
+pip install click
+```
+
 ### Usage
-1. ```pip install --editable .```
-2. ```15-puzzle```
+```bash
+python3 game.py -s [number of shuffles]
+```
+### Args
+- -s - The number of times the board will be shuffled.
+**[Default: 250] [optional] [example: -s 50]**
+### Help
+```bash
+python3 game.py --help
+```
+### Examples
+Start a game with 250 shuffles
+```bash
+python3 game.py -s 250
+```
 
-or
 
-1. ```pip install click```
-2. ```python3 game.py```
+## Solver
+### Usage
+1. Edit the [PUZZLE](https://github.com/cgr28/15-puzzle-solver/blob/main/solver.py#L10) variable with your puzzle configuration.
+2. Call ```python3 solver.py [astar|idastar|bfs] [number of shuffles]``` to generate a solution.
+### Args
+- solver - The solver that will be used to solve the 15 puzzle.
+**[Default: bfs] [optional] [example: astar]**
+- shuffles - The number of time the board will be shuffled.
+**[Default: 0] [optional] [example: 50]**
+### Solvers
+#### [Best First Search](https://github.com/cgr28/15-puzzle-solver/blob/main/puzzle.py#L159)
+Generates a solution the fastest. Solution not guranteed to be optimal.
+#### [A*](https://github.com/cgr28/15-puzzle-solver/blob/main/puzzle.py#L192)
+Takes longer to generate solutinons. Solutions are optimal.
+#### [IDA*](https://github.com/cgr28/15-puzzle-solver/blob/main/puzzle.py#L235)
+Takes longer to generate solutinons. Solutions are optimal.
+### Examples
+Solve a puzzle using astar with no shuffles.
+```bash
+python3 solver.py astar 0
+```
+Solve a puzzle using idastar with 10 shuffles.
+```bash
+python3 solver.py idastar 10
+```
+Solve a puzzle using bfs with 50 shuffles.
+```bash
+python3 solver.py bfs 50
+```
 
-### How-to
-#### Get help
-```15-puzzle --help```
-<br/>
-or
-<br/>
-
-```python3 game.py --help```
-
-#### Change number of shuffles
-```15-puzzle -s <number of shuffles>```
-<br/>
-or
-<br/>
-
-```python3 game.py -s <number of shuffles>```
-
-### Example
-1. Start a game with a board shuffled 100 times.
-<br />
-
-   ```15-puzzle -s 100```
-<br/>
-or
-<br/>
-
-   ```python3 game.py -s 100```
+## License
+[MIT](https://github.com/cgr28/15-puzzle-solver/blob/main/LICENSE)
