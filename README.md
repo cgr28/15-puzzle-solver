@@ -34,7 +34,7 @@ python3 game.py -s 250
 2. Call ```python3 solver.py [astar|idastar|bfs] [number of shuffles]``` to generate a solution.
 ### Args
 - solver - The solver that will be used to solve the 15 puzzle.
-**[Default: bfs] [optional] [example: astar]**
+**[Options: astar | idastar | bfs] [required] [example: astar]**
 - shuffles - The number of time the board will be shuffled.
 **[Default: 0] [optional] [example: 50]**
 ### Solvers
