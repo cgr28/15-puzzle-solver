@@ -2,6 +2,7 @@ from enums import *
 from collections import deque
 from puzzle import *
 import sys
+import json 
 
 class State:
     """Used in the solvers to represent a state
@@ -22,33 +23,6 @@ class State:
 
 class Heuristics:
 
-    # top_half = {}
-    # bottom_half = {}
-
-    # @staticmethod
-    # def generate_database():
-    #     num_of_moves = 0
-    #     vis = set()
-    #     solution = Puzzle([["1", "2", "3", "4"],["5", "6", "7", "8"],["*", "*", "*", "*"],["*", "*", "*", "_"]])
-    #     que = deque([solution])
-    #     while que:
-    #         state = que.pop()
-    #         vis.add(Translators.puzzle_to_string(state.board))
-    #         for move in [Moves.RIGHT, Moves.LEFT, Moves.UP, Moves.DOWN]:
-    #             temp = state.copy()
-    #             can_move = temp.slide(move)
-    #             if not can_move:
-    #                 continue
-    #             if Translators.puzzle_to_string(temp.board) in vis:
-    #                 continue
-    #             que.appendleft(temp)
-    #         num_of_moves += 1
-    #     print(num_of_moves)
-            
-    # @staticmethod
-    # def pattern_database(puzzle):
-    #     pass
-
     @staticmethod
     def manhattan_distance(start, end):
         """Returns the distance between two points.
@@ -60,7 +34,6 @@ class Heuristics:
         y1, x1 = start
         y2, x2 = end
         ans = abs(x1 - x2) + abs(y1 - y2)
-        # print(f"|{x1} - {x2}| + |{y1} - {y2}| =", ans)
         return ans
 
     @staticmethod
@@ -95,6 +68,14 @@ class Translators:
             return "right"
         else:
             return "left"
+
+    @staticmethod
+    def board_to_string(board):
+        board_string = ""
+        for i in range(len(board)):
+            for j in range(len(board[i])):
+                board_string += (board[i][j] + "-" )
+        return board_string
 
 class Helpers:
 
